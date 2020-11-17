@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Oct 14 12:22:46 2017
+
+@author: eder
+"""
+
+Time to read msh file:  0.026342782999563497  seconds
+Cython C time to assembly matrix A and vector b:  1.7842756419995567  seconds
+Cython Numpy time to assembly matrix A and vector b:  18.104141335999884  seconds
+Python time to assembly matrix A and vector b:  58.47989795899775  seconds
+Time to solve the linear system:  0.1293355289963074  seconds
+Time to separate temperature and flux:  0.000543770998774562  seconds
+Time to post-processing:  0.08629472099710256  seconds
+Total time:  2.0267924459913047  seconds
+Number of elements:  612
+
+Time to read msh file:  0.1391022850000354  seconds
+Cython C time to assembly matrix A and vector b:  28.281876537000016  seconds
+Cython Numpy time to assembly matrix A and vector b:  301.5205208699999  seconds
+Python time to assembly matrix A and vector b:  874.219037414  seconds
+Time to solve the linear system:  0.3038316990000567  seconds
+Time to separate temperature and flux:  0.0021600499999294698  seconds
+Time to post-processing:  0.22474415900023814  seconds
+Total time:  28.951714730000276  seconds
+Number of elements:  2480
+
+Time to read msh file:  0.48168731599980674  seconds
+Cython C time to assembly matrix A and vector b:  449.90157704599915  seconds
+Cython Numpy time to assembly matrix A and vector b:  4580.279612729  seconds
+Python time to assembly matrix A and vector b:  13493.436352651  seconds
+Time to solve the linear system:  17.567136429999664  seconds
+Time to separate temperature and flux:  0.008469934997265227  seconds
+Time to post-processing:  0.1330588960008754  seconds
+Total time:  468.0919296229986  seconds
+Number of elements:  9792
+
+Time to read msh file:  1.0635642819997884  seconds
+Cython C time to assembly matrix A and vector b:  2058.8115712870003  seconds
+Time to solve the linear system:  287.22895112399965  seconds
+Time to separate temperature and flux:  0.9835675880003691  seconds
+Time to post-processing:  80.8786297480001  seconds
+Total time:  2428.9662840290002  seconds
+Number of elements:  21056
+
+Number of elements: 39168 => memory error 

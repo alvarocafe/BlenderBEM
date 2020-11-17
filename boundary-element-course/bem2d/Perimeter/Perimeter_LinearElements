@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jul 31 15:40:23 2017
+
+@author: eder
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+
+def compute_perimeter(elem,nodes):
+    n_el = elem.shape[0]
+    Perimeter=0
+    for i in range(n_el):
+        node1 = elem[i,0]
+        node2 = elem[i,1]
+        x1 = nodes[node1,0]
+        y1 = nodes[node1,1]
+        x2 = nodes[node2,0]
+        y2 = nodes[node2,1]
+        Li=np.sqrt((x2-x1)**2+(y2-y1)**2) # lenght of the element i
+        Perimeter=Perimeter+Li
+    return Perimeter
+
+
+# First create the x and y coordinates of the points.
+n_angles = 10
+radius=1.
+
+angles = np.linspace(0, 2*np.pi, n_angles, endpoint=False)
+
+x = radius*np.cos(angles)
+y = radius*np.sin(angles)
+nodes=np.concatenate((x, y)).reshape(2,-1).transpose()
+inodes=np.arange(n_angles,dtype=int)
+elem=np.zeros((n_angles,2),dtype=int)
+elem[:,0]=inodes;
+elem[:-1,1]=inodes[1:]
+elem[-1,1]=inodes[0] # last node of second column equal to first node
+perimeter=compute_perimeter(elem,nodes)
+print('Perimeter = ',perimeter)
+xnode=np.append(nodes[:,0],nodes[0,0])
+ynode=np.append(nodes[:,1],nodes[0,1])
+plt.plot(xnode,ynode,"ro-",markersize=4)	# Plot the node of the elements
+plt.axis("equal")
+
+
+

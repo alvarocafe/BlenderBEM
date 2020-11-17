@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jul 31 11:14:57 2017
+
+@author: eder
+"""
+# For points are given with a corresponding value to each point
+# It generates 2 triangles and colored it based on the values of each point
+import numpy as np
+import matplotlib.tri as tri
+import matplotlib.pyplot as plt
+NOS=np.array([[0.5, 0],[1,0.5],[.5,1],[ 0,.5]]);
+T=np.array([0.5,1,0.5,0]);
+T2=np.array([0.5,1]);
+triang = tri.Triangulation(NOS[:,0],NOS[:,1])
+elem=triang.triangles
+ncont=50;
+plt.triplot(NOS[:,0], NOS[:,1], elem, color=(0.0,0.,0.),linewidth=0.4)
+plt.tricontourf(NOS[:,0], NOS[:,1], elem, T, ncont, linewidth=2)
+plt.show()
