@@ -28,15 +28,6 @@ faces = me.polygons
 verts = me.vertices
 coord = []
 elem = []
-for poly in me.polygons:
-    print("Polygon index: %d, length: %d" % (poly.index, poly.loop_total))
-    print("Vertices in polygon %d:" % poly.index)
-    print(list(poly.vertices))
-    for loop_index in range(poly.loop_start, poly.loop_start + poly.loop_total):
-        print("    Vertex: %d" % me.loops[loop_index].vertex_index)
-        print("    UV: %r" % uv_layer[loop_index].uv)
-        print("coords: ")
-        print(verts[me.loops[loop_index].vertex_index].co)
 
 for poly in me.polygons:
     print("Polygon index: %d, length: %d" % (poly.index, poly.loop_total))
