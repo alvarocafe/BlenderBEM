@@ -1,0 +1,33 @@
+function [GG,HH]=calcula_HeGns(XP,YP,X1,Y1,X2,Y2,SL,ETA1,ETA2,ISTEP,AT,CS,GI,OME)
+#   THIS SUBROUTINE COMPUTES THE G AND H MATRICES
+#   COEFFICIENTS THAT RELATE A COLOCATION POINT WITH AN ELEMENT
+#   TO WHICH THE POINT DOES NOT BELONG USING GAUSS QUADRATURE
+
+#   RA            = RADIUS
+#   RDN           = RADIUS DERIVATIVE
+#   ETA1,ETA2     = COMPONENTS OF THE UNIT NORMAL TO THE ELEMENT
+#   GI(I)         = GAUSS QUADRATURE POINTS
+#   OME(I)        = GAUSS QUADRATURE WEIGHTS
+#   XCO,YCO       = INTEGRATION POINTS ALONG THE ELEMENT
+
+AX=(X2-X1)/2.0;
+BX=(X2+X1)/2.0;
+AY=(Y2-Y1)/2.0;
+BY=(Y2+Y1)/2.0;
+CST=CS*AT*ISTEP;
+GG=0;
+HH=0;
+npg=length(OME); # Número de pontos de Gauss
+for I=1:npg
+    XCO=AX*GI(I)+BX-XP;
+    YCO=AY*GI(I)+BY-YP;
+    RA=sqrt(XCO^2+YCO^2);
+    if(RA<=CST)
+        RDN=(XCO*ETA1+YCO*ETA2)/RA;
+        XJA=OME(I)*SL;
+        [Uast,Tast]=calc_solfund(RA,ISTEP,AT,CS);
+        GG=GG+XJA*Uast;
+        HH=HH+XJA*RDN*Tast;
+    end
+end
+return
