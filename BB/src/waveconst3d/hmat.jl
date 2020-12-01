@@ -1,4 +1,4 @@
-
+using Distributed
 ########################################################################################
 function cal_Aeb(b1,b2,arg)
     # Calcula a matriz A e o vetor b sem interpolar

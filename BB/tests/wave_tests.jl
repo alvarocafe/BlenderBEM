@@ -9,7 +9,7 @@
 ### return error
  using Plots
 #gr()
-pyplot()
+#pyplot()
 xs = 0.01:0.01:1
 # p1 = contour(xs,xs,f,fill=true) 
 #################### Test case 1-4 ####################
