@@ -29,13 +29,13 @@ include("src/wavenurbs2D/wavenurbs2D.jl")
 #include("src/nurbs2D/nurbs2D.jl")
 # 3-dimensional elements.
 include("src/const3D_tri/const3D_tri.jl")
-include("src/waveconst3d/waveconst3d.jl")
+#include("src/waveconst3d/waveconst3d.jl")
 include("src/const3D_tri/const3D_tri_POT.jl")
 include("src/transconst2D/transconst2D.jl")
 # Tests
 include("tests/wave_tests.jl")
 include("tests/pot_tests.jl")
-using .const2D, .const3D_tri, .potconst3d, .waveconst3d, SpecialFunctions, KrylovMethods, Distributed
+using .const2D, .const3D_tri, .potconst3d, SpecialFunctions, KrylovMethods, Distributed
 # Main function
 function BEM_base(file,PONTOS_int=[],BCFace = [],k=1, equation = "wave")
     println("Importing mesh...")
