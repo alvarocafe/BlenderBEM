@@ -4,7 +4,7 @@
 # Contains the dependencies for the triangular element integration. The main function is const3D_tri.solve() which builds the influence matrices, applies the boundary conditions, solves the linear system and returns the value of the velocity potential and its flux at boundary and domain points.
 
 module potconst3d
-using LinearAlgebra
+
 include("dep.jl") # Includes the dependencies
 function solve(info,PONTOS_int,BCFace,k)
 	NOS_GEO,ELEM,elemint,CDC = info

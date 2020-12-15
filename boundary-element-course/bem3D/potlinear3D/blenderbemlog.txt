@@ -1,0 +1,279 @@
+cafe@cinza:~$ /home/cafe/blender-2.91.0-linux64/blender 
+Read prefs: /home/cafe/.config/blender/2.91/config/userpref.blend
+found bundled python: /home/cafe/blender-2.91.0-linux64/2.91/python
+Info: Deleted 3 object(s)
+
+Traceback (most recent call last):
+  File "/BlenderBEML.py", line 35, in <module>
+FileNotFoundError: [Errno 2] No such file or directory: '/boundary-element-course/bem3D/potlinear3D/'
+Error: Python script failed, check the message in the system console
+
+Info: Total files 2 | Changed 2 | Failed 0
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+Info: Deleted 1 object(s)
+
+Info: Deleted 1 object(s)
+
+Info: Deleted 2 object(s)
+
+11298 elements. Starting BEM...
+11298 elements. Starting BEM...
+...11298 boundary conditions...
+
+Programa iniciado.
+Número de nós: 5820
+Número de elementos: 11298
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.05498957633972168
+Tempo para montagem das matrizes H e G: 317.07863783836365
+Tempo para aplicas as condições de contorno: 141.17118906974792
+Tempo para resolver o sistema linear: 2.894477367401123
+Tempo para ordenar os dados: 176.63418793678284
+Tempo de processamento: 638.6589968204498 s.
+Programa finalizado.
+Info: Deleted 1 object(s)
+
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+12288 elements. Starting BEM...
+12288 elements. Starting BEM...
+...12288 boundary conditions...
+
+Programa iniciado.
+Número de nós: 6146
+Número de elementos: 12288
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.05835366249084473
+Tempo para montagem das matrizes H e G: 364.5957815647125
+Tempo para aplicas as condições de contorno: 178.6998255252838
+Tempo para resolver o sistema linear: 4.137058734893799
+Tempo para ordenar os dados: 197.46984338760376
+Tempo de processamento: 745.7641956806183 s.
+Programa finalizado.
+Info: Saved "benchlinear.blend"
+
+Saved session recovery to '/tmp/quit.blend'
+
+Blender quit
+cafe@cinza:~$ /home/cafe/blender-2.91.0-linux64/blender 
+Read prefs: /home/cafe/.config/blender/2.91/config/userpref.blend
+found bundled python: /home/cafe/blender-2.91.0-linux64/2.91/python
+Read blend: /home/cafe/Assets/Scripts/cube/BlenderBEM/benchlinear.blend
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+12288 elements. Starting BEM...
+12288 elements. Starting BEM...
+...12288 boundary conditions...
+
+Programa iniciado.
+Número de nós: 6146
+Número de elementos: 12288
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.05752253532409668
+Tempo para montagem das matrizes H e G: 581.0411603450775
+Tempo para aplicas as condições de contorno: 174.61055731773376
+Tempo para resolver o sistema linear: 3.5503339767456055
+Tempo para ordenar os dados: 191.62169671058655
+Tempo de processamento: 951.6829838752747 s.
+Programa finalizado.
+Info: Saved "benchlinear.blend"
+
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+12288 elements. Starting BEM...
+12288 elements. Starting BEM...
+...12288 boundary conditions...
+
+Programa iniciado.
+Número de nós: 6146
+Número de elementos: 12288
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.05505084991455078
+Tempo para montagem das matrizes H e G: 570.8465385437012
+Tempo para aplicas as condições de contorno: 172.8784680366516
+Tempo para resolver o sistema linear: 3.7113723754882812
+Tempo para ordenar os dados: 189.6990954875946
+Tempo de processamento: 937.9932990074158 s.
+Programa finalizado.
+Info: Saved "benchlinear.blend"
+
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+12288 elements. Starting BEM...
+12288 elements. Starting BEM...
+...12288 boundary conditions...
+
+Programa iniciado.
+Número de nós: 6146
+Número de elementos: 12288
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.05551648139953613
+Tempo para montagem das matrizes H e G: 318.9302091598511
+Tempo para aplicas as condições de contorno: 176.3334367275238
+Tempo para resolver o sistema linear: 3.49916934967041
+Tempo para ordenar os dados: 191.8404824733734
+Tempo de processamento: 691.4793591499329 s.
+Programa finalizado.
+Info: Saved "benchlinear.blend"
+
+Info: Saved Text '/home/cafe/Assets/Scripts/cube/BlenderBEM/BlenderBEML.py'
+
+Info: Saved "benchlinear.blend"
+
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+12288 elements. Starting BEM...
+12288 elements. Starting BEM...
+...12288 boundary conditions...
+
+Programa iniciado.
+Número de nós: 6146
+Número de elementos: 12288
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.0578768253326416
+Tempo para montagem das matrizes H e G: 360.38120007514954
+Tempo para aplicas as condições de contorno: 178.77470684051514
+Tempo para resolver o sistema linear: 3.517043113708496
+Tempo para ordenar os dados: 196.47102642059326
+Tempo de processamento: 740.0240631103516 s.
+Programa finalizado.
+Info: Saved "benchlinear.blend"
+
+Info: Saved Text '/home/cafe/Assets/Scripts/cube/BlenderBEM/BlenderBEML.py'
+
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+Info: Saved "benchlinear.blend"
+
+Saved session recovery to '/tmp/quit.blend'
+
+Blender quit
+cafe@cinza:~$ /home/cafe/blender-2.91.0-linux64/blender 
+Read prefs: /home/cafe/.config/blender/2.91/config/userpref.blend
+found bundled python: /home/cafe/blender-2.91.0-linux64/2.91/python
+Read blend: /home/cafe/Assets/Scripts/cube/BlenderBEM/benchlinear.blend
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+12288 elements. Starting BEM...
+12288 elements. Starting BEM...
+...12288 boundary conditions...
+
+Programa iniciado.
+Número de nós: 6146
+Número de elementos: 12288
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.05533647537231445
+Tempo para montagem das matrizes H e G: 339.70894169807434
+Tempo para aplicas as condições de contorno: 177.6396086215973
+Tempo para resolver o sistema linear: 4.090559005737305
+Tempo para ordenar os dados: 189.5020523071289
+Tempo de processamento: 711.7444844245911 s.
+Programa finalizado.
+Info: Saved "benchlinear.blend"
+
+Info: Saved "benchlinear.blend"
+
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+12288 elements. Starting BEM...
+12288 elements. Starting BEM...
+...12288 boundary conditions...
+
+Programa iniciado.
+Número de nós: 6146
+Número de elementos: 12288
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.06125330924987793
+Tempo para montagem das matrizes H e G: 174.44183993339539
+Tempo para aplicas as condições de contorno: 167.5705223083496
+Tempo para resolver o sistema linear: 3.493382215499878
+Tempo para ordenar os dados: 189.32465815544128
+Tempo de processamento: 535.7100353240967 s.
+Programa finalizado.
+Info: Saved "benchlinear.blend"
+
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+12288 elements. Starting BEM...
+12288 elements. Starting BEM...
+...12288 boundary conditions...
+
+Programa iniciado.
+Número de nós: 6146
+Número de elementos: 12288
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.05730938911437988
+Tempo para montagem das matrizes H e G: 125.62273454666138
+Tempo para aplicas as condições de contorno: 173.02234292030334
+Tempo para resolver o sistema linear: 3.423459529876709
+Tempo para ordenar os dados: 188.43622708320618
+Tempo de processamento: 491.35541343688965 s.
+Programa finalizado.
+Info: Saved "benchlinear.blend"
+
+
+/home/cafe/Assets/Scripts/cube/BlenderBEM/boundary-element-course/bem3D/potlinear3D
+12288 elements. Starting BEM...
+12288 elements. Starting BEM...
+...12288 boundary conditions...
+
+Programa iniciado.
+Número de nós: 6146
+Número de elementos: 12288
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.059018611907958984
+Tempo para montagem das matrizes H e G: 56.65967011451721
+Tempo para aplicas as condições de contorno: 173.30506682395935
+Tempo para resolver o sistema linear: 3.4471795558929443
+Tempo para ordenar os dados: 193.85779094696045
+Tempo de processamento: 428.1327760219574 s.
+Programa finalizado.
+
+
+20480 elements. Starting BEM...                         20480 elements. Starting BEM...
+...20480 boundary conditions...                         
+Programa iniciado.                                      Número de nós: 10242
+Número de elementos: 20480
+Calculando as matrizes H e G.
+Aplicando as condições de contorno.
+Resolvendo o sistema linear.
+Separando as variáveis.
+Gerando o arquivo de pós-processamento.
+Tempo para ler e gerar os dados iniciais: 0.08641886711120605
+Tempo para montagem das matrizes H e G: 145.40236520767212
+Tempo para aplicas as condições de contorno: 314.9174585342407
+Tempo para resolver o sistema linear: 14.241106271743774
+Tempo para ordenar os dados: 496.40524077415466
+Tempo de processamento: 972.6628139019012 s.
+Programa finalizado.

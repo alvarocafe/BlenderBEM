@@ -5,8 +5,9 @@ Created on Mon Sep  5 22:38:45 2016
 @author: mansour
 """
 import numpy as np
-#from numba import jit
-#@jit
+from numba import jit
+from numba import float64,int32
+@jit(forceobj=True)
 def mount_matrix(node_med,normal,Jac,nodes_coord, elem,k):
     npgauss=4
     xiquad,wquad=np.polynomial.legendre.leggauss(npgauss)
@@ -16,7 +17,6 @@ def mount_matrix(node_med,normal,Jac,nodes_coord, elem,k):
     xitri = 0.5*(xiquad + 1)*(b - a) + a
     wtri=wquad*0.5*(b - a)
     nn =elem.shape[0]
-    print(nn)
     H = np.zeros((nn, nn))
     G = np.zeros((nn, nn))
     for ii in range(0,nn):

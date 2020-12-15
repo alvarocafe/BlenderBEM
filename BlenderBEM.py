@@ -13,10 +13,10 @@ jl = Julia(compiled_modules=False)
 from julia import Main
 
 os.chdir(os.path.dirname(bpy.data.filepath) + '/BB')
-print(os.getcwd())
+print("Loading BEM solver from " + os.getcwd())
 jl.eval('pwd()')
 jl.eval('include("BEM_base.jl")')
-
+print("BEM solver loaded.")
 class MyProperties(PropertyGroup):
     
     my_enum : EnumProperty(
@@ -38,9 +38,9 @@ class MyProperties(PropertyGroup):
     k = 1
     PONTOS_int = []
 
-class ADDONNAME_PT_main_panel(Panel):
+class BLENDERBEM_PT_main_panel(Panel):
     bl_label = "BlenderBEM"
-    bl_idname = "ADDONNAME_PT_main_panel"
+    bl_idname = "BLENDERBEM_PT_main_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = "BlenderBEM"
@@ -50,17 +50,18 @@ class ADDONNAME_PT_main_panel(Panel):
         scene = context.scene
         mytool = scene.my_tool
         
-        layout.operator("addonname.addcube_operator")
-        layout.operator("addonname.prepare_operator")
+        layout.operator("blenderbem.addcube_operator")
+        layout.operator("blenderbem.addsphere_operator")
+        layout.operator("blenderbem.prepare_operator")
         layout.prop(mytool, "my_enum", expand = True)
-        layout.operator("addonname.submit_operator")
-        layout.operator("addonname.domain_operator")
-        layout.operator("addonname.run_operator")
-        layout.operator("addonname.runwave_operator")
+        layout.operator("blenderbem.submit_operator")
+        layout.operator("blenderbem.domain_operator")
+        layout.operator("blenderbem.run_operator")
+        layout.operator("blenderbem.runwave_operator")
 
-class ADDONNAME_OT_prepare(Operator):
+class BLENDERBEM_OT_prepare(Operator):
     bl_label = "Prepare mesh"
-    bl_idname = "addonname.prepare_operator"
+    bl_idname = "blenderbem.prepare_operator"
     surf = []
     elem = []
     coord = []
@@ -86,13 +87,15 @@ class ADDONNAME_OT_prepare(Operator):
         coord = np.array(coord)
         elem = np.array(elem)
         surf = np.ones(len(elem))
-        ADDONNAME_OT_prepare.coord = coord
-        ADDONNAME_OT_prepare.elem = elem
-        ADDONNAME_OT_prepare.surf = surf
+        BLENDERBEM_OT_prepare.coord = coord
+        BLENDERBEM_OT_prepare.elem = elem
+        BLENDERBEM_OT_prepare.surf = surf
         print(f'{len(elem)} elements. Starting BEM...')
         # Visualization
         # Create material slot and material with the a color corresponding to a normalized interpolation of a color ramp.
-        bpy.ops.object.mode_set(mode='OBJECT') # Can't assign materials in editmode
+#        bpy.ops.object.mode_set(mode='OBJECT') # Can't assign materials in editmode
+        for m in me.materials:
+            me.materials.pop()
 
         for poly in me.polygons:
             i = poly.index
@@ -108,9 +111,9 @@ class ADDONNAME_OT_prepare(Operator):
         return {'FINISHED'}
 
 
-class ADDONNAME_OT_submit(Operator):
+class BLENDERBEM_OT_submit(Operator):
     bl_label = "Submit polys to potential"
-    bl_idname = "addonname.submit_operator"
+    bl_idname = "blenderbem.submit_operator"
     
     surf =[]
     elem =[]
@@ -150,20 +153,20 @@ class ADDONNAME_OT_submit(Operator):
                     
         else:
             print("Object is not in edit mode.")
-        surf = ADDONNAME_OT_prepare.surf
+        surf = BLENDERBEM_OT_prepare.surf
         for i in face_index:
             surf[i] = 2
 
         for i in face_index1:
             surf[i] = 3
-        ADDONNAME_OT_submit.surf = surf
+        BLENDERBEM_OT_submit.surf = surf
         elemj = []
-        elem = ADDONNAME_OT_prepare.elem
+        elem = BLENDERBEM_OT_prepare.elem
         for i in range(len(elem)):
             elemj.append([elem[i,0],elem[i,1],elem[i,2],surf[i]])
 
-        ADDONNAME_OT_submit.elem = elem
-        ADDONNAME_OT_submit.elemj = elemj
+        BLENDERBEM_OT_submit.elem = elem
+        BLENDERBEM_OT_submit.elemj = elemj
         BCFace = []
         for i in range(1,6):
             BCFace.append([i,1,0])
@@ -172,37 +175,60 @@ class ADDONNAME_OT_submit(Operator):
         BCFace[2] = [3,0,1]
         BCFace[3] = [4,1,0]
         BCFace[4] = [5,1,1]
-        ADDONNAME_OT_submit.BCFace = BCFace
+        BLENDERBEM_OT_submit.BCFace = BCFace
 
         return {'FINISHED'}
 
-class ADDONNAME_OT_domain(Operator):
-    bl_label = "Submit vertices to domain"
-    bl_idname = "addonname.domain_operator"
+class BLENDERBEM_OT_domain(Operator):
+    bl_label = "Submit object to domain"
+    bl_idname = "blenderbem.domain_operator"
     object = ''
     PONTOS_dom = []
     def execute(self, context):
         
         PONTOS_dom = []
         me = bpy.context.object.data
-        ADDONNAME_OT_domain.object = bpy.context.object.data
+        bpy.ops.object.modifier_add(type='TRIANGULATE')
+        bpy.ops.object.modifier_apply(modifier="Triangulate")        
+        BLENDERBEM_OT_domain.object = bpy.context.object
         faces = me.polygons
         verts = me.vertices
+        coord = []
+        elem = []
         ndom = 0
+        for poly in faces:
+            elem.append([poly.index+1,poly.vertices[0]+1, poly.vertices[1]+1, poly.vertices[2]+1,1])
+
         for v in verts:
-            ndom += 1
-            PONTOS_dom.append([ndom, v.co[0], v.co[1], v.co[2]])
+            coord.append([v.index+1,v.co[0], v.co[1], v.co[2]])
+        Main.NOS_GEO_dom = coord
+        Main.ELEM_dom = elem
         
-        ADDONNAME_OT_domain.PONTOS_dom = PONTOS_dom
+        PONTOS_dom = jl.eval('const3D_tri.mostra_geoTRI(NOS_GEO_dom,ELEM_dom)')
+#        PONTOS_dom = coord
+
+        BLENDERBEM_OT_domain.PONTOS_dom = PONTOS_dom
         print(f'{len(PONTOS_dom)} domain points...')
+        # Visualization
+        # Create material slot and material with the a color corresponding to a normalized interpolation of a color ramp.
+        for poly in me.polygons:
+            i = poly.index
+            # TODO: check if the object already has materials.
+            mat = bpy.data.materials.new("Mat_%i" % i)
+        #    mat.use_diffuse_ramp = True
+        #    mat.diffuse_ramp.evaluate(T)
+            mat.diffuse_color = 255, 255, 255, 1
+            mat.roughness = 1
+            me.materials.append(mat)
+            poly.material_index = i
 
         return {'FINISHED'}
 
 
 
-class ADDONNAME_OT_run(Operator):
+class BLENDERBEM_OT_run(Operator):
     bl_label = "Run Laplace BEM"
-    bl_idname = "addonname.run_operator"
+    bl_idname = "blenderbem.run_operator"
 
     def color_verts(my_object,T):
         vert_list = my_object.vertices
@@ -222,15 +248,15 @@ class ADDONNAME_OT_run(Operator):
         # Solving with Julia
         # info,PONTOS_int,BCFace,k
         # NOS_GEO,ELEM,elemint,CDC = info
-        Main.NOS_GEO1 = ADDONNAME_OT_prepare.coord
-        Main.ELEM1 = ADDONNAME_OT_submit.elemj
+        Main.NOS_GEO1 = BLENDERBEM_OT_prepare.coord
+        Main.ELEM1 = BLENDERBEM_OT_submit.elemj
         Main.elemint = []
-        Main.BCFace1 = ADDONNAME_OT_submit.BCFace
+        Main.BCFace1 = BLENDERBEM_OT_submit.BCFace
         Main.CDC = []
         Main.k = 1
-        Main.PONTOS_int = ADDONNAME_OT_domain.PONTOS_dom
-        PONTOS_int = ADDONNAME_OT_domain.PONTOS_dom
-        object = ADDONNAME_OT_domain.object
+        Main.PONTOS_int = BLENDERBEM_OT_domain.PONTOS_dom
+        PONTOS_int = BLENDERBEM_OT_domain.PONTOS_dom
+        object = BLENDERBEM_OT_domain.object
         jl.eval('ELEM=zeros(Int,size(ELEM1,1),5)')
         jl.eval('for i=1:size(ELEM1,1); ELEM[i,:] = [i ELEM1[i,1]+1 ELEM1[i,2]+1 ELEM1[i,3]+1 ELEM1[i,4] ]; end')
         jl.eval('ELEM = convert(Array{Int32},ELEM)')
@@ -248,7 +274,6 @@ class ADDONNAME_OT_run(Operator):
 
         # Visualization
         # Create material slot and material with the a color corresponding to a normalized interpolation of a color ramp.
-        bpy.ops.object.mode_set(mode='OBJECT') # Can't assign materials in editmode
         obj=bpy.context.object
         me = bpy.context.object.data
         for poly in me.polygons:
@@ -257,29 +282,44 @@ class ADDONNAME_OT_run(Operator):
             mat.diffuse_color = 254*T[i]+1, 0, 0, 1
 
         # Color domain points with vertex color
-        if ADDONNAME_OT_domain.object != '':
+        if BLENDERBEM_OT_domain.object != '':
 #            print(object)
-            ADDONNAME_OT_run.color_verts(object,T_pint)
+            BLENDERBEM_OT_run.color_verts(object,T_pint)
 #            object = bpy.data.objects[object]           
         return {'FINISHED'}
 
 
 
-class ADDONNAME_OT_runwave(Operator):
+class BLENDERBEM_OT_runwave(Operator):
     bl_label = "Run Helmholtz BEM"
-    bl_idname = "addonname.runwave_operator"
+    bl_idname = "blenderbem.runwave_operator"
+
+    def color_verts(my_object,T):
+        my_object = my_object.data
+        vert_list = my_object.vertices
+        color_map = my_object.vertex_colors.new()
+        i = 0
+        for poly in my_object.polygons:
+            for idx in poly.loop_indices:
+                loop = my_object.loops[idx]
+                v = loop.vertex_index
+                color_map.data[i].color = 0, 0, 254*T[v]+1, 1
+                i += 1
+        return {'FINISHED'}
     
     def execute(self, context):
         # Solving with Julia
         # info,PONTOS_int,BCFace,k
         # NOS_GEO,ELEM,elemint,CDC = info
-        Main.NOS_GEO1 = ADDONNAME_OT_prepare.coord
-        Main.ELEM1 = ADDONNAME_OT_submit.elemj
+        Main.NOS_GEO1 = BLENDERBEM_OT_prepare.coord
+        Main.ELEM1 = BLENDERBEM_OT_submit.elemj
         Main.elemint = []
-        Main.BCFace1 = ADDONNAME_OT_submit.BCFace
+        Main.BCFace1 = BLENDERBEM_OT_submit.BCFace
         Main.CDC = []
-        Main.k = 3
-        Main.PONTOS_int = []
+        Main.k = 10
+        Main.PONTOS_int = BLENDERBEM_OT_domain.PONTOS_dom
+        PONTOS_int = BLENDERBEM_OT_domain.PONTOS_dom
+        object = BLENDERBEM_OT_domain.object
         jl.eval('ELEM=zeros(Int,size(ELEM1,1),5)')
         jl.eval('for i=1:size(ELEM1,1); ELEM[i,:] = [i ELEM1[i,1]+1 ELEM1[i,2]+1 ELEM1[i,3]+1 ELEM1[i,4] ]; end')
         jl.eval('ELEM = convert(Array{Int32},ELEM)')
@@ -293,21 +333,30 @@ class ADDONNAME_OT_runwave(Operator):
         T,q,T_pint,q_pint = jl.eval('const3D_tri.solve([NOS_GEO,ELEM,elemint,CDC],PONTOS_int,BCFace,k,true)')
 
         T = T.real
+        T_pint = T_pint.real
+#        T_pint = abs(T_pint/max(T_pint))
         # Visualization
         # Create material slot and material with the a color corresponding to a normalized interpolation of a color ramp.
-        bpy.ops.object.mode_set(mode='OBJECT') # Can't assign materials in editmode
         obj=bpy.context.object
         me = bpy.context.object.data
         for poly in me.polygons:
             i = poly.index
             mat = obj.material_slots[i].material
             mat.diffuse_color = 0, 0, 254*T[i]+1, 1
-        
+        # Color domain points with materials
+        if BLENDERBEM_OT_domain.object != '':
+            obj=BLENDERBEM_OT_domain.object
+            me = BLENDERBEM_OT_domain.object.data
+            for poly in me.polygons:
+                i = poly.index
+                mat = obj.material_slots[i].material
+                mat.diffuse_color = 0, 0, 254*T_pint[i]+1, 1            
+#            BLENDERBEM_OT_runwave.color_verts(obj,T_pint)
         return {'FINISHED'}
 
-class ADDONNAME_OT_addcube(Operator):
+class BLENDERBEM_OT_addcube(Operator):
     bl_label = "Add an exterior cube"
-    bl_idname = "addonname.addcube_operator"
+    bl_idname = "blenderbem.addcube_operator"
 
     def execute(self, context):
         bpy.ops.mesh.primitive_cube_add(enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
@@ -319,9 +368,26 @@ class ADDONNAME_OT_addcube(Operator):
         bpy.ops.object.editmode_toggle()
 
         return {'FINISHED'}
+class BLENDERBEM_OT_addsphere(Operator):
+    bl_label = "Add an exterior sphere"
+    bl_idname = "blenderbem.addsphere_operator"
+
+    def execute(self, context):
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=1, enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
+        bpy.ops.object.editmode_toggle()
+        bpy.ops.mesh.normals_make_consistent(inside=True)
+        bpy.ops.object.editmode_toggle()
+        bpy.ops.mesh.primitive_plane_add(size=2, enter_editmode=False, align='WORLD', location=(0, 0, 0), scale=(1, 1, 1))
+        bpy.ops.transform.resize(value=(10, 10, 10), orient_type='GLOBAL', orient_matrix=((1, 0, 0), (0, 1, 0), (0, 0, 1)), orient_matrix_type='GLOBAL', mirror=True, use_proportional_edit=False, proportional_edit_falloff='SMOOTH', proportional_size=1, use_proportional_connected=False, use_proportional_projected=False)
+        bpy.ops.object.modifier_add(type='SUBSURF')
+        bpy.context.object.modifiers["Subdivision"].subdivision_type = 'SIMPLE'
+        bpy.context.object.modifiers["Subdivision"].levels = 6
+        bpy.ops.object.modifier_apply(modifier="Subdivision")
+
+        return {'FINISHED'}
 
 
-classes = [MyProperties, ADDONNAME_PT_main_panel, ADDONNAME_OT_submit,ADDONNAME_OT_prepare,ADDONNAME_OT_run,ADDONNAME_OT_runwave,ADDONNAME_OT_domain,ADDONNAME_OT_addcube]
+classes = [MyProperties, BLENDERBEM_PT_main_panel, BLENDERBEM_OT_submit,BLENDERBEM_OT_prepare,BLENDERBEM_OT_run,BLENDERBEM_OT_runwave,BLENDERBEM_OT_domain,BLENDERBEM_OT_addcube,BLENDERBEM_OT_addsphere]
  
 def register():
     for cls in classes:

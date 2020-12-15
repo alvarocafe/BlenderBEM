@@ -22,6 +22,31 @@ function Hinterp(Tree,block,arg,ninterp=3,compressão=true,ϵ=1e-3)
     return Aaca,b
 end
 
+function Hinter_threads(Tree,block,arg,ninterp=3,compressão=true,ϵ=1e-3)
+    # arg = [NOS,NOS_GEO,ELEM,fc,qsi,w,CDC,k]
+    #         1     2     3    4  5  6  7  8
+    n = size(block,1)  # Quantidade de Submatrizes
+    Aaca = Array{Any}(undef,n,2) # Cria vetor{Any} que armazena submatrizes [Nº de submatrizes x 2]
+    b = complex(zeros(size(arg[1],1))) # Cria matriz b, Ax=b, de zeros [Nº de nos x 1]
+    Threads.@threads for i=1:n # Para cada Submatriz
+	# @timeit to "Para cada Submatriz" begin
+	b1 = Tree[block[i,1]] # Nós I da malha que formam a submatriz (Pontos Fonte) (linhas)
+	b2 = Tree[block[i,2]] # Nós J da malha que formam a submatriz (Pontos Campo) (Colunas)
+	# Submatriz = Produto cartesiano I x J
+	if block[i,3]==0 # Se esses blocos não são admissiveis
+	    Aaca[i,1],B = cal_Aeb(b1,b2,arg)
+	    # Salva na linha i da 1º coluna da matriz Aaca a matriz H e salva G na matriz B
+	    b[b1] = b[b1] + B  # Contribuicao para o valor de G*q dos nos que formam b2
+	else  # Caso contrario (Se blocos são admissiveis)
+	    Aaca[i,1],Aaca[i,2],L,B=cal_Aeb_interp(b1,b2,arg,ninterp,compressão,ϵ)
+	    b[b1] = b[b1] + L*(B*arg[7][b2,3])
+	end
+	# end
+    end
+    return Aaca,b
+end
+
+
 function cal_Aeb_interp(b1,b2,arg,ninterp=3,compressão=true,ϵ=1e-3)
     NOS,NOS_GEO,ELEM,fc,qsi,w,CDC,k=arg
     nelem::Int64 = size(ELEM)[1]          # Numero de elementos de contorno
@@ -32,7 +57,7 @@ function cal_Aeb_interp(b1,b2,arg,ninterp=3,compressão=true,ϵ=1e-3)
     xmax=maximum(NOS[b1,2:4],dims=1)
     xmin=minimum(NOS[b1,2:4],dims=1)
     xs=criapontosinterp(ninterp)
-    n1,n2,n3=calc_fforma(xs)
+    n1,n2,n3=calc_fformatri(xs,xs)
     xks=n1*xmin+n2*xmax+n3*xmin # porque n3*xmin
     ci=0
 
