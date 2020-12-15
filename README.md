@@ -12,7 +12,9 @@ Then, add Julia to the PATH. In GNU/Linux, this may be achieved by making a symb
 `sudo ln -s /path/to/your/julia-1.5.3/bin/ /usr/bin/julia`
 
 You'll need to install and build PyCall in Julia:
+
 `]add PyCall`
+
 `]build PyCall`
 
 Install pip in the Blender Python binary by downloading the get_pip.py script from: https://github.com/pypa/get-pip
@@ -32,6 +34,7 @@ Open the iterative console of the Blender Python:
 Import Julia and install it:
 
 `import julia`
+
 `julia.install()`
 
 You can now run the BlenderBEM.py script in Blender to use the Julia solver. 
