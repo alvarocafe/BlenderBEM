@@ -10,7 +10,7 @@ If you wish to run BlenderBEM for Helmholtz problems, you'll need to install Jul
 
 Then, add Julia to the PATH. In GNU/Linux, this may be achieved by making a symbolic link to a folder that is in your PATH.
 
-`sudo ln -s /path/to/your/julia-1.5.3/bin/ /usr/bin/julia`
+`sudo ln -s /path/to/your/julia-1.5.3/bin/julia /usr/bin/julia`
 
 You'll need to install and build PyCall in Julia:
 
