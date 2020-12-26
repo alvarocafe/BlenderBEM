@@ -1,6 +1,7 @@
 # BlenderBEM
 This is a Blender addon to solve boundary element method equations using Python and Julia solvers.
 
+## Install
 First, you'll need Blender: https://www.blender.org/download/
 
 Then you can already use BlenderBEM by downloading this repository and running the script BlenderBEML.py. This script uses a Cython implementation of the BEM for Laplace problems.
@@ -38,6 +39,15 @@ Import Julia and install it:
 `julia.install()`
 
 You can now run the BlenderBEM.py script in Blender to use the Julia solver. 
+
+
+## How to use
+
+First, add a mesh object in Blender. Select the object and click "Prepare Mesh" to start the method and let BlenderBEM know which object will be used for the analysis.
+
+Now, change to Object Mode by pressing the Tab key and select some polygons with the mouse. Use the Shift key together with the left mouse button or press b to box select. Press the "Submit polys to potential" to submit those polygons to the boundary condition potential specified.
+
+When the boundary conditions are all set, go back to Object Mode by pressing the Tab key and press the "Run Laplace" button to solve the problem. 
 
 A demo of the tool can be seen here:
 
